@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
+import express from 'express';
+import cors from 'cors';
+import authRoutes from './routes/authRoutes.js';
+import taskRoutes from './routes/taskRoutes.js';
+import errorHandler from './middlewares/errorMiddleware.js';
 
 const app = express();
 
@@ -16,11 +16,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
 // Error Handling
-const errorHandler = require('./middlewares/errorMiddleware');
 app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Task Manager API' });
 });
 
-module.exports = app;
+export default app;

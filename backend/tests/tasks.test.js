@@ -1,17 +1,34 @@
-const request = require('supertest');
-const app = require('../src/app');
-const taskModel = require('../src/models/taskModel');
-const authMiddleware = require('../src/middlewares/authMiddleware');
+import { jest } from '@jest/globals';
 
 // Mock dependencies
-jest.mock('../src/models/taskModel');
-jest.mock('../src/middlewares/authMiddleware');
+jest.unstable_mockModule('../src/models/taskModel.js', () => ({
+    default: {
+        createTask: jest.fn(),
+        getTasksByUserId: jest.fn(),
+        getTaskById: jest.fn(),
+        updateTask: jest.fn(),
+        deleteTask: jest.fn(),
+    },
+}));
+
+jest.unstable_mockModule('../src/middlewares/authMiddleware.js', () => ({
+    default: jest.fn((req, res, next) => {
+        req.user = { userId: 1, email: 'test@example.com' };
+        next();
+    }),
+}));
+
+// Import modules after mocking
+const { default: request } = await import('supertest');
+const { default: app } = await import('../src/app.js');
+const { default: taskModel } = await import('../src/models/taskModel.js');
+const { default: authenticateToken } = await import('../src/middlewares/authMiddleware.js');
 
 describe('Task Endpoints', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        // Mock auth middleware to pass through with a mock user
-        authMiddleware.mockImplementation((req, res, next) => {
+        // Reset auth middleware implementation if needed, though the default mock covers it
+        authenticateToken.mockImplementation((req, res, next) => {
             req.user = { userId: 1, email: 'test@example.com' };
             next();
         });

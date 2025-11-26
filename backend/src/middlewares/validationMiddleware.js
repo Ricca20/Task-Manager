@@ -1,4 +1,4 @@
-const Joi = require('joi');
+import Joi from 'joi';
 
 const validate = (schema) => {
     return (req, res, next) => {
@@ -24,7 +24,7 @@ const updateTaskSchema = Joi.object({
     due_date: Joi.date().iso().allow(null),
 });
 
-module.exports = {
+export {
     validate,
     createTaskSchema,
     updateTaskSchema,

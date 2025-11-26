@@ -1,4 +1,4 @@
-const db = require('../config/db');
+import db from '../config/db.js';
 
 const createTask = async (userId, title, description, status, dueDate) => {
     const query = `
@@ -57,7 +57,7 @@ const deleteTask = async (taskId) => {
     return result.rows[0];
 };
 
-module.exports = {
+export default {
     createTask,
     getTasksByUserId,
     getTaskById,

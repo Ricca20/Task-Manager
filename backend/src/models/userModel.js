@@ -1,4 +1,4 @@
-const db = require('../config/db');
+import db from '../config/db.js';
 
 const createUser = async (email, passwordHash) => {
     const query = `
@@ -23,7 +23,7 @@ const findUserById = async (id) => {
     return result.rows[0];
 };
 
-module.exports = {
+export default {
     createUser,
     findUserByEmail,
     findUserById,

@@ -1,4 +1,4 @@
-const taskModel = require('../models/taskModel');
+import taskModel from '../models/taskModel.js';
 
 const createTask = async (req, res) => {
     try {
@@ -103,7 +103,7 @@ const deleteTask = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     createTask,
     getTasks,
     getTask,

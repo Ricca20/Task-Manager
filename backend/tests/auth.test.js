@@ -1,13 +1,35 @@
-const request = require('supertest');
-const app = require('../src/app');
-const userModel = require('../src/models/userModel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import { jest } from '@jest/globals';
 
-// Mock the userModel and other dependencies
-jest.mock('../src/models/userModel');
-jest.mock('bcrypt');
-jest.mock('jsonwebtoken');
+// Mock dependencies using unstable_mockModule
+jest.unstable_mockModule('../src/models/userModel.js', () => ({
+    default: {
+        findUserByEmail: jest.fn(),
+        createUser: jest.fn(),
+        findUserById: jest.fn(),
+    },
+}));
+
+jest.unstable_mockModule('bcrypt', () => ({
+    default: {
+        genSalt: jest.fn(),
+        hash: jest.fn(),
+        compare: jest.fn(),
+    },
+}));
+
+jest.unstable_mockModule('jsonwebtoken', () => ({
+    default: {
+        sign: jest.fn(),
+        verify: jest.fn(),
+    },
+}));
+
+// Import modules after mocking
+const { default: request } = await import('supertest');
+const { default: app } = await import('../src/app.js');
+const { default: userModel } = await import('../src/models/userModel.js');
+const { default: bcrypt } = await import('bcrypt');
+const { default: jwt } = await import('jsonwebtoken');
 
 describe('Auth Endpoints', () => {
     beforeEach(() => {
