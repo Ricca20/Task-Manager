@@ -2,17 +2,15 @@ import { jest } from '@jest/globals';
 
 // Mock dependencies
 jest.unstable_mockModule('../src/models/taskModel.js', () => ({
-    default: {
-        createTask: jest.fn(),
-        getTasksByUserId: jest.fn(),
-        getTaskById: jest.fn(),
-        updateTask: jest.fn(),
-        deleteTask: jest.fn(),
-    },
+    createTask: jest.fn(),
+    getTasksByUserId: jest.fn(),
+    getTaskById: jest.fn(),
+    updateTask: jest.fn(),
+    deleteTask: jest.fn(),
 }));
 
 jest.unstable_mockModule('../src/middlewares/authMiddleware.js', () => ({
-    default: jest.fn((req, res, next) => {
+    authenticateToken: jest.fn((req, res, next) => {
         req.user = { userId: 1, email: 'test@example.com' };
         next();
     }),
@@ -21,8 +19,8 @@ jest.unstable_mockModule('../src/middlewares/authMiddleware.js', () => ({
 // Import modules after mocking
 const { default: request } = await import('supertest');
 const { default: app } = await import('../src/app.js');
-const { default: taskModel } = await import('../src/models/taskModel.js');
-const { default: authenticateToken } = await import('../src/middlewares/authMiddleware.js');
+const taskModel = await import('../src/models/taskModel.js');
+const { authenticateToken } = await import('../src/middlewares/authMiddleware.js');
 
 describe('Task Endpoints', () => {
     beforeEach(() => {

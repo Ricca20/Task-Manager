@@ -1,30 +1,24 @@
-import db from '../config/db.js';
+import { query } from '../config/db.js';
 
-const createUser = async (email, passwordHash) => {
-    const query = `
+export const createUser = async (email, passwordHash) => {
+    const sql = `
     INSERT INTO users (email, password_hash)
     VALUES ($1, $2)
     RETURNING id, email;
   `;
     const values = [email, passwordHash];
-    const result = await db.query(query, values);
+    const result = await query(sql, values);
     return result.rows[0];
 };
 
-const findUserByEmail = async (email) => {
-    const query = 'SELECT * FROM users WHERE email = $1';
-    const result = await db.query(query, [email]);
+export const findUserByEmail = async (email) => {
+    const sql = 'SELECT * FROM users WHERE email = $1';
+    const result = await query(sql, [email]);
     return result.rows[0];
 };
 
-const findUserById = async (id) => {
-    const query = 'SELECT id, email FROM users WHERE id = $1';
-    const result = await db.query(query, [id]);
+export const findUserById = async (id) => {
+    const sql = 'SELECT id, email FROM users WHERE id = $1';
+    const result = await query(sql, [id]);
     return result.rows[0];
-};
-
-export default {
-    createUser,
-    findUserByEmail,
-    findUserById,
 };

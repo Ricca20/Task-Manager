@@ -1,6 +1,6 @@
-import taskModel from '../models/taskModel.js';
+import * as taskModel from '../models/taskModel.js';
 
-const createTask = async (req, res) => {
+export const createTask = async (req, res) => {
     try {
         const { title, description, status, due_date } = req.body;
         const userId = req.user.userId;
@@ -17,7 +17,7 @@ const createTask = async (req, res) => {
     }
 };
 
-const getTasks = async (req, res, next) => {
+export const getTasks = async (req, res, next) => {
     try {
         const userId = req.user.userId;
         const { status, page = 1, limit = 10 } = req.query;
@@ -34,7 +34,7 @@ const getTasks = async (req, res, next) => {
     }
 };
 
-const getTask = async (req, res) => {
+export const getTask = async (req, res) => {
     try {
         const taskId = req.params.id;
         const userId = req.user.userId;
@@ -56,7 +56,7 @@ const getTask = async (req, res) => {
     }
 };
 
-const updateTask = async (req, res) => {
+export const updateTask = async (req, res) => {
     try {
         const taskId = req.params.id;
         const userId = req.user.userId;
@@ -80,7 +80,7 @@ const updateTask = async (req, res) => {
     }
 };
 
-const deleteTask = async (req, res) => {
+export const deleteTask = async (req, res) => {
     try {
         const taskId = req.params.id;
         const userId = req.user.userId;
@@ -101,12 +101,4 @@ const deleteTask = async (req, res) => {
         console.error('Delete task error:', error);
         res.status(500).json({ message: 'Server error' });
     }
-};
-
-export default {
-    createTask,
-    getTasks,
-    getTask,
-    updateTask,
-    deleteTask,
 };

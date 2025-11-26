@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const validate = (schema) => {
+export const validate = (schema) => {
     return (req, res, next) => {
         const { error } = schema.validate(req.body);
         if (error) {
@@ -10,22 +10,16 @@ const validate = (schema) => {
     };
 };
 
-const createTaskSchema = Joi.object({
+export const createTaskSchema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().allow('', null),
     status: Joi.string().valid('pending', 'in_progress', 'completed').default('pending'),
     due_date: Joi.date().iso().allow(null),
 });
 
-const updateTaskSchema = Joi.object({
+export const updateTaskSchema = Joi.object({
     title: Joi.string(),
     description: Joi.string().allow('', null),
     status: Joi.string().valid('pending', 'in_progress', 'completed'),
     due_date: Joi.date().iso().allow(null),
 });
-
-export {
-    validate,
-    createTaskSchema,
-    updateTaskSchema,
-};

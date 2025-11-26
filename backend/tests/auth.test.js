@@ -2,11 +2,9 @@ import { jest } from '@jest/globals';
 
 // Mock dependencies using unstable_mockModule
 jest.unstable_mockModule('../src/models/userModel.js', () => ({
-    default: {
-        findUserByEmail: jest.fn(),
-        createUser: jest.fn(),
-        findUserById: jest.fn(),
-    },
+    findUserByEmail: jest.fn(),
+    createUser: jest.fn(),
+    findUserById: jest.fn(),
 }));
 
 jest.unstable_mockModule('bcrypt', () => ({
@@ -27,7 +25,7 @@ jest.unstable_mockModule('jsonwebtoken', () => ({
 // Import modules after mocking
 const { default: request } = await import('supertest');
 const { default: app } = await import('../src/app.js');
-const { default: userModel } = await import('../src/models/userModel.js');
+const userModel = await import('../src/models/userModel.js');
 const { default: bcrypt } = await import('bcrypt');
 const { default: jwt } = await import('jsonwebtoken');
 
